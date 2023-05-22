@@ -1,5 +1,5 @@
-import Button from "./button.js";
-import Table from "./table.js";
+import Button from './button.js';
+import Table from './table.js';
 
 export default class App {
   constructor($app) {
@@ -18,15 +18,15 @@ export default class App {
   async render() {
     this.$app.innerHTML = this.template();
     try {
-      const response = await fetch("../data/data.json");
+      const response = await fetch('../data/data.json');
       if (response.ok) {
         const data = await response.json();
-        const button = document.querySelector(".btnWrapper");
-        const container = document.querySelector(".container");
+        const button = document.querySelector('.btnWrapper');
+        const container = document.querySelector('.container');
         new Table(data, container);
         new Button(button);
       } else {
-        console.log("서버상태 이상함");
+        console.log('서버상태 이상함');
       }
     } catch (e) {
       console.log(e);
