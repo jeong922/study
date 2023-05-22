@@ -1,3 +1,4 @@
+'use strict';
 export default class Items {
   constructor($target, props) {
     this.$target = $target;

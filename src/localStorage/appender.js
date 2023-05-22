@@ -1,3 +1,4 @@
+'use strict';
 export default class Appender {
   constructor($target, props) {
     this.$target = $target;
