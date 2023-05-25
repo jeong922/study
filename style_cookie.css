@@ -87,3 +87,7 @@ td {
   background-color: black;
   color: white;
 }
+
+input {
+  padding: 5px;
+}
