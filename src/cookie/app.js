@@ -11,52 +11,89 @@ export default class App {
     return `
       <h1 class='title flex justify-center'>Cookie</h1>
       <main class='container'>
-      <form>
-        <input type='text' name='name' placeholder='name' required />
-        <input type='text' name='value' placeholder='value' required />
-        <input type='number' name='expire' placeholder='expire' required />
-        <button class="td_btn">쿠키 생성하기</button>
-      </form>
+        <form>
+          <input type='text' name='name' placeholder='name' required />
+          <input type='text' name='value' placeholder='value' required />
+          <input type='number' name='expire' placeholder='expire' required />
+          <button class="td_btn">쿠키 생성하기</button>
+        </form>
 
-      <table>
-      <thead>
-        <tr>
-          <th>목록</th>
-          <th>버튼</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="tbody_tr">
-          <td class="td_text">쿠키 확인</td>
-          <td>
-            <button class="td_btn" name='getCookie'>쿠키 확인</button>
-          </td>
-        </tr>
-        <tr class="tbody_tr">
-          <td class="td_text">쿠키 삭제하기</td>
-          <td>
-            <button class="td_btn" name='deleteCookie'>쿠키 삭제하기</button>
-          </td>
-        </tr>
-         <tr class="tbody_tr">
-          <td class="td_text">쿠키 전체삭제</td>
-          <td>
-            <button class="td_btn" name='AllDeleteCookie'>쿠키 전체삭제</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <table>
+          <thead>
+            <tr>
+              <th>목록</th>
+              <th>버튼</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="tbody_tr">
+              <td class="td_text">쿠키 확인</td>
+              <td>
+                <button class="td_btn" name='getCookie'>쿠키 확인</button>
+              </td>
+            </tr>
+            <tr class="tbody_tr">
+              <td class="td_text">쿠키 삭제하기</td>
+              <td>
+                <button class="td_btn" name='deleteCookie'>쿠키 삭제하기</button>
+              </td>
+            </tr>
+            <tr class="tbody_tr">
+              <td class="td_text">쿠키 전체삭제</td>
+              <td>
+                <button class="td_btn" name='AllDeleteCookie'>쿠키 전체삭제</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </main>
+      <div id="modal" class="overlay"></div>
     `;
   }
 
   render() {
     this.$app.innerHTML = this.template();
+    this.checkCookie();
+    const modal = document.querySelector('#modal');
+    modal.innerHTML = this.displayModal();
+  }
+
+  checkCookie() {
+    const cookie = document.cookie.split('; ').find((v) => v === 'modal=close');
+    const modal = document.querySelector('#modal');
+    if (cookie) {
+      modal.classList.add('modal__close');
+    }
+  }
+
+  displayModal() {
+    return `
+      <div class="modal__wrapper">
+        <div class="modal__container">
+          <p class="modal__title">JavaScript</p>
+          <p>
+            JavaScript (JS) is a lightweight, interpreted, or just-in-time
+            compiled programming language with first-class functions. While it
+            is most well-known as the scripting language for Web pages, many
+            non-browser environments also use it, such as Node.js, Apache
+            CouchDB and Adobe Acrobat. JavaScript is a prototype-based,
+            multi-paradigm, single-threaded, dynamic language, supporting
+            object-oriented, imperative, and declarative (e.g. functional
+            programming) styles.
+          </p>
+        </div>
+        <div class="modal__btns">
+          <button name="todayClose">오늘 하루 열리지 않음</button>
+          <button name="close">닫기</button>
+        </div>
+      </div>
+    `;
   }
 
   setEvent() {
     const table = document.querySelector('table');
     const form = document.querySelector('form');
+    const modal = document.querySelector('#modal');
     table.addEventListener('click', (e) => {
       const name = e.target.name;
       switch (name) {
@@ -88,6 +125,17 @@ export default class App {
       alert('쿠키 생성 완료!');
       e.target.reset();
       e.target.children[0].focus();
+    });
+
+    modal.addEventListener('click', (e) => {
+      const modal = document.querySelector('#modal');
+      const name = e.target.name;
+      if (name === 'todayClose') {
+        this.setCookie('modal', 'close', 1);
+        modal.classList.add('modal__close');
+      } else if (name === 'close') {
+        modal.classList.add('modal__close');
+      }
     });
   }
 
