@@ -40,7 +40,6 @@ export default class Modal {
     const { setCookie } = this.props;
     this.$target.addEventListener('click', (e) => {
       const name = e.target.name;
-      console.log(name);
       if (name === 'todayClose') {
         setCookie('modal', 'close', 1);
         this.$target.classList.add('modal__close');

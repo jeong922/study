@@ -27,9 +27,13 @@ body {
   padding: 10px;
 }
 
-table {
+.tableContainer {
   width: 100%;
   margin-top: 15px;
+}
+
+table {
+  width: 100%;
 }
 
 thead {
@@ -105,8 +109,9 @@ input {
 
 .modal__wrapper {
   position: relative;
-  padding: 10px;
+  padding: 20px;
   background-color: white;
+  border-radius: 20px;
   width: 500px;
 }
 
@@ -123,11 +128,20 @@ input {
 .modal__btns {
   width: 100%;
   display: flex;
+  justify-content: space-between;
 }
 
 .modal__btns button {
-  width: 50%;
+  width: 49%;
   padding: 5px;
+  background-color: rgb(179, 201, 233);
+  border: none;
+  cursor: pointer;
+}
+
+.modal__btns button:hover {
+  background-color: black;
+  color: white;
 }
 
 .modal__close {

@@ -1,6 +1,8 @@
 'use strict';
 
+import MakeCookie from './makeCookie.js';
 import Modal from './modal.js';
+import Table from './table.js';
 
 export default class App {
   constructor($app) {
@@ -11,45 +13,12 @@ export default class App {
 
   template() {
     return `
-      <h1 class='title flex justify-center'>Cookie</h1>
+      <h1 class='title'>Cookie</h1>
       <main class='container'>
-        <form>
-          <input type='text' name='name' placeholder='name' required />
-          <input type='text' name='value' placeholder='value' required />
-          <input type='number' name='expire' placeholder='expire' required />
-          <button class="td_btn">쿠키 생성하기</button>
-        </form>
-
-        <table>
-          <thead>
-            <tr>
-              <th>목록</th>
-              <th>버튼</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="tbody_tr">
-              <td class="td_text">쿠키 확인</td>
-              <td>
-                <button class="td_btn" name='getCookie'>쿠키 확인</button>
-              </td>
-            </tr>
-            <tr class="tbody_tr">
-              <td class="td_text">쿠키 삭제하기</td>
-              <td>
-                <button class="td_btn" name='deleteCookie'>쿠키 삭제하기</button>
-              </td>
-            </tr>
-            <tr class="tbody_tr">
-              <td class="td_text">쿠키 전체삭제</td>
-              <td>
-                <button class="td_btn" name='AllDeleteCookie'>쿠키 전체삭제</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class='makeCookie'></div>
+        <div class='tableContainer'></div>
       </main>
-      <div id="modal" class="overlay"></div>
+      <div id='modal' class='overlay'></div>
     `;
   }
 
@@ -57,7 +26,17 @@ export default class App {
     this.$app.innerHTML = this.template();
     this.checkCookie();
     const modal = document.querySelector('#modal');
+    const tableContainer = document.querySelector('.tableContainer');
+    const makeCookie = document.querySelector('.makeCookie');
+    new Table(tableContainer, {
+      getCookie: () => this.getCookie(),
+      deleteCookie: () => this.deleteCookie(),
+      AllDeleteCookie: () => this.AllDeleteCookie(),
+    });
     new Modal(modal, {
+      setCookie: (name, value, expire) => this.setCookie(name, value, expire),
+    });
+    new MakeCookie(makeCookie, {
       setCookie: (name, value, expire) => this.setCookie(name, value, expire),
     });
   }
@@ -70,45 +49,7 @@ export default class App {
     }
   }
 
-  displayModal() {}
-
-  setEvent() {
-    const table = document.querySelector('table');
-    const form = document.querySelector('form');
-
-    table.addEventListener('click', (e) => {
-      const name = e.target.name;
-      switch (name) {
-        case 'getCookie':
-          this.getCookie();
-          break;
-        case 'deleteCookie':
-          this.deleteCookie();
-          break;
-        case 'AllDeleteCookie':
-          this.AllDeleteCookie();
-          break;
-        default:
-          break;
-      }
-    });
-
-    // 테이블 안에 form을 넣으면 정상적으로 작동 안해서 밖으로 뺌..
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = e.target.children[0].value;
-      const value = e.target.children[1].value;
-      const expire = e.target.children[2].value;
-      if (name === '' && value === '' && expire === '') {
-        e.target.children[0].focus();
-        return;
-      }
-      this.setCookie(name, value, expire);
-      alert('쿠키 생성 완료!');
-      e.target.reset();
-      e.target.children[0].focus();
-    });
-  }
+  setEvent() {}
 
   getCookie = () => {
     const cookie = document.cookie;
